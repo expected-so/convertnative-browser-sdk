@@ -14,7 +14,7 @@
     "noFallthroughCasesInSwitch": true,
     "declaration": true,
     "declarationDir": "dist/types",
-    "typeRoots": ["src/types", "node_modules/@types"]
+    "typeRoots": ["node_modules/@types"]
   },
   "include": ["src"],
   "exclude": ["src/service-worker.ts"]

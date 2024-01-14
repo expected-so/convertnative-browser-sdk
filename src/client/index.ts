@@ -2,7 +2,7 @@ import { v4 as uuid } from 'uuid'
 import Cookie from 'js-cookie'
 import PushNotifications from "./push-notifications";
 
-export default class Index {
+export default class Client {
 	public workspaceId: string
 	public publicKey: string
 	public endpoint: string
@@ -56,12 +56,23 @@ export default class Index {
 		return this._pushNotifications
 	}
 
-	async registerServiceWorker(opts: { scope?: string, scriptURL: string | URL  }) {
+	async registerServiceWorker(opts: { registrationOptions?: RegistrationOptions, scriptURL: string | URL  }) {
 		if (!('serviceWorker' in navigator)) {
 			throw new ServiceWorkerUnsupportedError()
 		}
 
-		this.serviceWorker = await navigator.serviceWorker.register(opts.scriptURL, { scope: opts.scope })
+		const hasOrigin = /^.+:\/\/.+$/.test(opts.scriptURL.toString())
+		const scriptURL = new URL(hasOrigin ? opts.scriptURL : window.location.href)
+		if (!hasOrigin) {
+			scriptURL.pathname = opts.scriptURL.toString().split('?')[0]
+		}
+		scriptURL.searchParams.forEach((_, key) => scriptURL.searchParams.delete(key))
+		scriptURL.searchParams.set('endpoint', this.endpoint)
+		scriptURL.searchParams.set('workspace_id', this.workspaceId)
+		scriptURL.searchParams.set('public_key', this.publicKey)
+		scriptURL.searchParams.set('installation_id', this.installationId)
+		this.serviceWorker = await navigator.serviceWorker.register(scriptURL, opts.registrationOptions)
+		return this.serviceWorker
 	}
 }
 

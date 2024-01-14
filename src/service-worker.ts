@@ -6,6 +6,15 @@
 // https://github.com/microsoft/TypeScript/issues/14877
 declare var self: ServiceWorkerGlobalScope;
 
+const workerURL = new URL(self.serviceWorker.scriptURL)
+const endpoint = workerURL.searchParams.get('endpoint')
+const workspaceId = workerURL.searchParams.get('workspace_id')
+const publicKey = workerURL.searchParams.get('public_key')
+const installationId = workerURL.searchParams.get('installation_id')
+if (!endpoint || !workspaceId || !publicKey || !installationId) {
+	throw new Error(`Invalid worker URL ${workerURL}`)
+}
+
 self.addEventListener('push', (event: PushEvent) => {
 	const payload = event.data?.json()
 	if (!payload) {
@@ -26,14 +35,19 @@ self.addEventListener('notificationclick', (event: NotificationEvent) => {
 		return
 	}
 
-	const request = fetch(`${payload.origin.endpoint}/browser/v1/push_notification_deliveries/${payload.id}/opened`, {
+	const request = fetch(`${endpoint}/browser/v1/push_notification_deliveries/${payload.id}/opened`, {
 		method: 'POST',
 		headers: {
-			authorization: `Bearer ${btoa(`${payload.origin.workspace_id}:${payload.origin.public_key}`)}`,
+			authorization: `Bearer ${btoa(`${workspaceId}:${publicKey}`)}`,
 			'content-type': 'application/json',
 		},
 	})
-	event.waitUntil(request)
+	const promises: Promise<any>[] = [request]
+	if (payload.url) {
+		promises.push(self.clients.openWindow(payload.url))
+	}
+	event.notification.close()
+	event.waitUntil(Promise.all(promises))
 })
 
 // We need an export to force this file to act like a module, so TS will let us re-type `self`

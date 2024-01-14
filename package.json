@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "description": "JavaScript library to track events and receive push notifications with ConvertNative.",
   "scripts": {
-    "build": "webpack"
+    "build": "NODE_ENV=production webpack",
+    "watch": "webpack -w"
   },
   "author": "ConvertNative <hello@convertnative.com>",
   "license": "proprietary",

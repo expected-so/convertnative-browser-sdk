@@ -25,9 +25,6 @@ module.exports = {
 		},
 		'service-worker': {
 			import: resolve(__dirname, 'src/service-worker.ts'),
-			library: {
-				type: 'umd',
-			},
 		},
 	},
 	resolve: {
@@ -45,11 +42,6 @@ module.exports = {
 				use: 'ts-loader',
 				exclude: /node_modules/,
 			},
-			{
-				test: /\?url$/,
-				use: 'file-loader',
-				exclude: /node_modules/,
-			},
 		],
 	},
 	optimization: {
@@ -60,7 +52,7 @@ module.exports = {
 				extractComments: false,
 				terserOptions: {
 					mangle: false,
-					compress: true,
+					compress: false,
 					output: {
 						comments: false,
 					},

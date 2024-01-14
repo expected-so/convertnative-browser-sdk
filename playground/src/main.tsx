@@ -11,7 +11,7 @@ async function getClient() {
     workspaceId: '6d3f1d12-d06f-4b5c-92c8-16c640c338a4',
     publicKey: '54c7af657bf9375831366336a16b56b5',
   })
-  await client.registerServiceWorker({ scriptURL: serviceWorkerURL })
+  await client.registerServiceWorker({ scriptURL: serviceWorkerURL, registrationOptions: { scope: '/' } })
   await client.pushNotifications().subscribe()
   console.log('subscribed!')
 }
