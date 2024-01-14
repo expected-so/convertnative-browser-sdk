@@ -1,3 +1,11 @@
+/// <reference no-default-lib="true"/>
+/// <reference lib="ES2015" />
+/// <reference lib="webworker" />
+
+// Default type of `self` is `WorkerGlobalScope & typeof globalThis`
+// https://github.com/microsoft/TypeScript/issues/14877
+declare var self: ServiceWorkerGlobalScope;
+
 self.addEventListener('push', (event: PushEvent) => {
 	const payload = event.data?.json()
 	if (!payload) {
@@ -27,3 +35,6 @@ self.addEventListener('notificationclick', (event: NotificationEvent) => {
 	})
 	event.waitUntil(request)
 })
+
+// We need an export to force this file to act like a module, so TS will let us re-type `self`
+export default null

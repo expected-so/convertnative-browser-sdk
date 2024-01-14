@@ -1,9 +1,8 @@
 import { v4 as uuid } from 'uuid'
 import Cookie from 'js-cookie'
-import PushNotifications from "./push-notifications.ts";
-import serviceWorkerURL from './service-worker.ts?url'
+import PushNotifications from "./push-notifications";
 
-export default class Client {
+export default class Index {
 	public workspaceId: string
 	public publicKey: string
 	public endpoint: string
@@ -57,11 +56,12 @@ export default class Client {
 		return this._pushNotifications
 	}
 
-	async registerServiceWorker(opts?: RegistrationOptions) {
+	async registerServiceWorker(opts: { scope?: string, scriptURL: string | URL  }) {
 		if (!('serviceWorker' in navigator)) {
 			throw new ServiceWorkerUnsupportedError()
 		}
-		this.serviceWorker = await navigator.serviceWorker.register(serviceWorkerURL, opts ?? { scope: '/' })
+
+		this.serviceWorker = await navigator.serviceWorker.register(opts.scriptURL, { scope: opts.scope })
 	}
 }
 

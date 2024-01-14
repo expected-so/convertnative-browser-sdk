@@ -1,4 +1,4 @@
-import type {Client} from "./index.ts";
+import type Client from "./index";
 
 export default class PushNotifications {
 	constructor(private client: Client) {}
