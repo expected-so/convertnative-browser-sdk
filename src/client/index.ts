@@ -1,6 +1,7 @@
 import { v4 as uuid } from 'uuid'
 import Cookie from 'js-cookie'
 import PushNotifications from "./push-notifications";
+import Events from "./events";
 
 export default class Client {
 	public workspaceId: string
@@ -8,6 +9,7 @@ export default class Client {
 	public endpoint: string
 	public serviceWorker: ServiceWorkerRegistration | undefined
 	private _pushNotifications: PushNotifications | undefined
+	private _events: Events | undefined
 
 	constructor(opts: {
 		workspaceId: string, publicKey: string, endpoint?: string, serviceWorker?: ServiceWorkerRegistration
@@ -54,6 +56,13 @@ export default class Client {
 			this._pushNotifications = new PushNotifications(this)
 		}
 		return this._pushNotifications
+	}
+
+	events() {
+		if (!this._events) {
+			this._events = new Events(this)
+		}
+		return this._events
 	}
 
 	async registerServiceWorker(opts: { registrationOptions?: RegistrationOptions, scriptURL: string | URL  }) {

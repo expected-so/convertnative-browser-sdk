@@ -14,6 +14,7 @@ async function getClient() {
   await client.registerServiceWorker({ scriptURL: serviceWorkerURL, registrationOptions: { scope: '/' } })
   await client.pushNotifications().subscribe()
   console.log('subscribed!')
+  await client.events().pageViewed()
 }
 
 getClient().catch((error) => console.error(error))
