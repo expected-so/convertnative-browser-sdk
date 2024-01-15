@@ -21,6 +21,7 @@
   "devDependencies": {
     "@types/js-cookie": "^3.0.6",
     "@types/uuid": "^9.0.7",
+    "aws-sdk": "^2.1536.0",
     "terser-webpack-plugin": "^5.3.10",
     "ts-loader": "^9.5.1",
     "typescript": "^5.3.3",

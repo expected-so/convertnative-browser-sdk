@@ -24,7 +24,7 @@ export type UserDetails = {
 }
 
 export default class Events {
-	public userDetails?: UserDetails
+	public userDetails?: UserDetails | null | undefined
 
 	constructor(private client: Client) {}
 
@@ -124,7 +124,7 @@ export default class Events {
 		})
 	}
 
-	setUserDetails(userDetails: UserDetails) {
+	setUserDetails(userDetails: UserDetails | null | undefined) {
 		this.userDetails = userDetails
 	}
 
