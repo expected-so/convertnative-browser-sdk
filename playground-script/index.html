@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="icon" type="image/svg+xml" href="/vite.svg" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Script</title>
+	</head>
+	<body>
+		<script async src="https://cdn.convertnative.com/sdks/browser/v0/browser.js"></script>
+		<script>
+			window._convertNative = []
+			window._convertNative.push(function (ConvertNative) {
+				const client = new ConvertNative({
+					endpoint: 'http://localhost:3000',
+					workspaceId: '6d3f1d12-d06f-4b5c-92c8-16c640c338a4',
+					publicKey: '54c7af657bf9375831366336a16b56b5',
+				})
+
+				client.registerServiceWorker({scriptURL: 'sw.js'})
+					.then(async (sw) => {
+						await client.pushNotifications().subscribe()
+						console.log('subscribed!')
+						await client.events().pageViewed()
+					})
+			})
+		</script>
+	</body>
+</html>

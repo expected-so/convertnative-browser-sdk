@@ -19,9 +19,6 @@ module.exports = {
 		},
 		browser: {
 			import: resolve(__dirname, 'src/browser.ts'),
-			library: {
-				type: 'umd',
-			},
 		},
 		'service-worker': {
 			import: resolve(__dirname, 'src/service-worker.ts'),

@@ -1,6 +1,6 @@
 {
   "name": "@convertnative/browser-sdk",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "JavaScript library to track events and receive push notifications with ConvertNative.",
   "scripts": {
     "build": "NODE_ENV=production webpack",

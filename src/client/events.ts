@@ -117,7 +117,7 @@ export default class Events {
 		})
 	}
 
-	checkoutCompletedPayload(payload: CheckoutCompletedPayload) {
+	checkoutCompleted(payload: CheckoutCompletedPayload) {
 		return this._sendEvent({
 			type: 'checkout_completed',
 			properties: this.formatCheckoutPayload(payload),

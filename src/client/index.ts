@@ -70,17 +70,16 @@ export default class Client {
 			throw new ServiceWorkerUnsupportedError()
 		}
 
-		const hasOrigin = /^.+:\/\/.+$/.test(opts.scriptURL.toString())
-		const scriptURL = new URL(hasOrigin ? opts.scriptURL : window.location.href)
-		if (!hasOrigin) {
-			scriptURL.pathname = opts.scriptURL.toString().split('?')[0]
-		}
-		scriptURL.searchParams.forEach((_, key) => scriptURL.searchParams.delete(key))
-		scriptURL.searchParams.set('endpoint', this.endpoint)
-		scriptURL.searchParams.set('workspace_id', this.workspaceId)
-		scriptURL.searchParams.set('public_key', this.publicKey)
-		scriptURL.searchParams.set('installation_id', this.installationId)
-		this.serviceWorker = await navigator.serviceWorker.register(scriptURL, opts.registrationOptions)
+		const scriptURL = opts.scriptURL.toString().split('?')[0]
+		const searchParams = new URLSearchParams()
+		searchParams.set('endpoint', this.endpoint)
+		searchParams.set('workspace_id', this.workspaceId)
+		searchParams.set('public_key', this.publicKey)
+		searchParams.set('installation_id', this.installationId)
+		this.serviceWorker = await navigator.serviceWorker.register(
+			`${scriptURL}?${searchParams}`,
+			opts.registrationOptions,
+		)
 		return this.serviceWorker
 	}
 }

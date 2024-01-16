@@ -13,7 +13,7 @@ async function run() {
 	const folder = `sdks/browser/v${majorVersion}`
 	const filesToInvalidate = []
 	for (const fileName of ['browser.js', 'browser.js.map', 'service-worker.js', 'service-worker.js.map']) {
-		const key = `/${folder}/${fileName}`
+		const key = `${folder}/${fileName}`
 		console.log(`uploading ${key}...`)
 		await s3.upload({
 			Bucket: process.env.BUCKET_NAME,
@@ -33,7 +33,7 @@ async function run() {
 			CallerReference: Date.now().toString(),
 			Paths: {
 				Quantity: filesToInvalidate.length,
-				Items: filesToInvalidate,
+				Items: filesToInvalidate.map(key => `/${key}`),
 			},
 		},
 	}).promise()
