@@ -76,10 +76,17 @@ export default class Client {
 		searchParams.set('workspace_id', this.workspaceId)
 		searchParams.set('public_key', this.publicKey)
 		searchParams.set('installation_id', this.installationId)
-		this.serviceWorker = await navigator.serviceWorker.register(
-			`${scriptURL}?${searchParams}`,
-			opts.registrationOptions,
-		)
+		const url = `${scriptURL}?${searchParams}`
+		this.serviceWorker = await navigator.serviceWorker.register(url, opts.registrationOptions)
+		if (this.serviceWorker?.active?.scriptURL) {
+			const serviceWorkerURL = new URL(this.serviceWorker.active?.scriptURL)
+			const hasValidConfiguration = Array.from(searchParams.entries())
+				.every(([key, value]) => serviceWorkerURL.searchParams.get(key) === value)
+			if (!hasValidConfiguration) {
+				await this.serviceWorker.unregister()
+				this.serviceWorker = await navigator.serviceWorker.register(url, opts.registrationOptions)
+			}
+		}
 		return this.serviceWorker
 	}
 }

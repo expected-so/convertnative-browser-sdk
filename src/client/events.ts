@@ -175,7 +175,7 @@ export default class Events {
 			product_variant_sku: payload.variantSKU,
 			product_variant_image_url: payload.variantImageURL,
 			unit_price: payload.unitPrice,
-			currency: payload.currency,
+			currency: 'currency' in payload ? payload.currency : undefined,
 		}
 	}
 

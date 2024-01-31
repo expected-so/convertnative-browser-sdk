@@ -16,6 +16,7 @@
 					workspaceId: '6d3f1d12-d06f-4b5c-92c8-16c640c338a4',
 					publicKey: '54c7af657bf9375831366336a16b56b5',
 				})
+				window.currentClient = client
 
 				client.registerServiceWorker({scriptURL: 'sw.js'})
 					.then(async (sw) => {

@@ -12,10 +12,12 @@ export type ProductVariantPayload = {
 	variantSKU?: string | undefined | null
 	variantImageURL?: string | undefined | null
 	unitPrice: string | number | undefined | null
-	currency: string | undefined | null
 }
 
-export type ProductViewedPayload = ProductPayload & (ProductVariantPayload | {})
+export type ProductViewedPayload = ProductPayload & (
+	(ProductVariantPayload & { currency: string | undefined | null }) |
+	{}
+)
 
 export type SearchSubmittedPayload = {
 	query: string
